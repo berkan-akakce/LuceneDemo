@@ -1,6 +1,7 @@
-﻿namespace LuceneDemo;
-
-internal class Product
+﻿namespace LuceneDemo
 {
-    public required string Name { get; set; }
+    internal class Product
+    {
+        public string Name { get; set; }
+    }
 }
