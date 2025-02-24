@@ -1,4 +1,7 @@
-﻿using Lucene.Net.Analysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -6,95 +9,95 @@ using Lucene.Net.QueryParsers.Flexible.Standard;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
-using LuceneDemo;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 
-internal class Program
+namespace LuceneDemo
 {
-    private const string Field = "name";
-
-    private static void Main()
+    internal class Program
     {
-        // Specify the compatibility version we want.
-        const LuceneVersion matchVersion = LuceneVersion.LUCENE_48;
+        private const string Field = "name";
 
-        // Open the Directory using a Lucene Directory class.
-        //string indexName = "lucene_index";
-        //string path = Path.Combine(Environment.CurrentDirectory, indexName);
-        //using FSDirectory indexDir = FSDirectory.Open(path);
-        RAMDirectory indexDir = new RAMDirectory();
-
-        // Create an analyzer to process the text.
-        Analyzer analyzer = new StandardAnalyzer(matchVersion);
-
-        // Create an index config.
-        IndexWriterConfig indexConfig = new IndexWriterConfig(matchVersion, analyzer)
+        private static void Main()
         {
-            OpenMode = OpenMode.CREATE // create/overwrite index
-        };
+            // Specify the compatibility version we want.
+            const LuceneVersion matchVersion = LuceneVersion.LUCENE_48;
 
-        // Create an index writer.
-        using (IndexWriter writer = new IndexWriter(d: indexDir, conf: indexConfig))
-        {
-            Product[] documents = CreateExampleData();
-
-            foreach (var document in documents)
+            // Open the Directory using a Lucene Directory class.
+            //string indexName = "lucene_index";
+            //string path = Path.Combine(Environment.CurrentDirectory, indexName);
+            //using FSDirectory indexDir = FSDirectory.Open(path);
+            using (var indexDir = new RAMDirectory())
             {
-                // Create a new document.
-                Document doc = new Document()
+                // Create an analyzer to process the text.
+                Analyzer analyzer = new StandardAnalyzer(matchVersion);
+
+                // Create an index config.
+                var indexConfig = new IndexWriterConfig(matchVersion, analyzer)
                 {
-                    // Add fields to the document.
-                    new TextField(
-                        name: Field,
-                        value: document.Name.ToLower(culture: new CultureInfo(name: "tr-TR")),
-                        store: Lucene.Net.Documents.Field.Store.YES
-                    ),
+                    OpenMode = OpenMode.CREATE // create/overwrite index
                 };
 
-                // Add the document to the index.
-                writer.AddDocument(doc);
-            }
+                // Create an index writer.
+                using (var writer = new IndexWriter(d: indexDir, conf: indexConfig))
+                {
+                    var documents = CreateExampleData();
 
-            // Commit changes and close the writer.
-            writer.Commit();
+                    foreach (var document in documents)
+                    {
+                        // Create a new document.
+                        var doc = new Document
+                        {
+                            // Add fields to the document.
+                            new TextField(
+                                name: Field,
+                                value: document.Name.ToLower(culture: new CultureInfo(name: "tr-TR")),
+                                store: Lucene.Net.Documents.Field.Store.YES
+                            ),
+                        };
+
+                        // Add the document to the index.
+                        writer.AddDocument(doc);
+                    }
+
+                    // Commit changes and close the writer.
+                    writer.Commit();
+                }
+
+                using (IndexReader reader = DirectoryReader.Open(directory: indexDir))
+                {
+                    var booleanQuery = CreateBooleanQuery(analyzer);
+
+                    // Searching the index
+                    var searcher = new IndexSearcher(r: reader);
+                    var hits = searcher.Search(query: booleanQuery, n: int.MaxValue).ScoreDocs;
+
+                    // Store the document ids of the matched documents.
+                    var matchedDocIds = new HashSet<int>();
+
+                    foreach (var hit in hits)
+                        matchedDocIds.Add(item: hit.Doc);
+
+                    // Iterate over all documents in the index to find unmatched documents.
+                    for (int i = 0; i < reader.NumDocs; ++i)
+                    {
+                        // Skip matched documents.
+                        if (matchedDocIds.Contains(item: i))
+                            continue;
+
+                        // Get the unmatched document and print it.
+                        var doc = searcher.Doc(docID: i);
+
+                        Console.WriteLine(doc.Get(name: Field));
+                    }
+                }
+            }
         }
 
-        using (IndexReader reader = DirectoryReader.Open(directory: indexDir))
-        {
-            BooleanQuery booleanQuery = CreateBooleanQuery(analyzer);
-
-            // Searching the index
-            IndexSearcher searcher = new IndexSearcher(r: reader);
-            var hits = searcher.Search(query: booleanQuery, n: int.MaxValue).ScoreDocs;
-
-            // Store the document ids of the matched documents.
-            HashSet<int> matchedDocIds = new HashSet<int>();
-
-            foreach (var hit in hits)
-                matchedDocIds.Add(item: hit.Doc);
-
-            // Iterate over all documents in the index to find unmatched documents.
-            for (int i = 0; i < reader.NumDocs; ++i)
-            {
-                // Skip matched documents.
-                if (matchedDocIds.Contains(item: i))
-                    continue;
-
-                // Get the unmatched document and print it.
-                var doc = searcher.Doc(docID: i);
-
-                Console.WriteLine(doc.Get(name: Field));
-            }
-        }
-
-        Product[] CreateExampleData()
+        private static Product[] CreateExampleData()
         {
             //TODO: prpgInof tablosundan ürün isimleri alınacak.
 
             // Example data
-            return new Product[]
+            return new[]
             {
                 new Product { Name = "Huawei MateBook X i5-10210U 16 GB 512 GB SSD UHD Graphics 13\" Notebook" },
                 new Product { Name = "Samsung Galaxy S9 64 GB Gri" },
@@ -198,79 +201,82 @@ internal class Program
                 new Product { Name = "My Mob Betong Plus Lawen Dresuar Teşhir" }
             };
         }
-    }
 
-    private static BooleanQuery CreateBooleanQuery(Analyzer analyzer)
-    {
-        const Occur occur = Occur.SHOULD;
+        private static BooleanQuery CreateBooleanQuery(Analyzer analyzer)
+        {
+            const Occur occur = Occur.SHOULD;
 
-        BooleanQuery booleanQuery = new BooleanQuery()
+            var booleanQuery = new BooleanQuery
             {
                 // Add OR conditions as SHOULD clauses.
-                BooleanClauseFactory(text: "kutusuz", occur),
-                BooleanClauseFactory(text: "outlet", occur),
-                BooleanClauseFactory(text: "revizyonlu", occur),
-                BooleanClauseFactory(text: "teşır", occur),
-                BooleanClauseFactory(text: "teşir", occur),
-                BooleanClauseFactory(text: "teshir", occur),
-                BooleanClauseFactory(text: "teşhır", occur),
-                BooleanClauseFactory(text: "teşhir", occur),
-                BooleanClauseFactory(text: "ürünü", occur),
-                BooleanClauseFactory(text: "yenılenmış", occur),
-                BooleanClauseFactory(text: "yenilenmiş", occur),
-                BooleanClauseFactory(text: "ölü pixel", occur),
-                BooleanClauseFactory(text: "ölüpixel", occur),
-                BooleanClauseFactory(text: "olu pixel", occur),
-                BooleanClauseFactory(text: "olupixel", occur),
-                BooleanClauseFactory(text: "ölü piksel", occur),
-                BooleanClauseFactory(text: "ölüpiksel", occur),
-                BooleanClauseFactory(text: "olu piksel", occur),
-                BooleanClauseFactory(text: "olupiksel", occur)
+                PhraseQueryFactory(text: "kutusuz", occur),
+                PhraseQueryFactory(text: "outlet", occur),
+                PhraseQueryFactory(text: "revizyonlu", occur),
+                PhraseQueryFactory(text: "teşır", occur),
+                PhraseQueryFactory(text: "teşir", occur),
+                PhraseQueryFactory(text: "teshir", occur),
+                PhraseQueryFactory(text: "teşhır", occur),
+                PhraseQueryFactory(text: "teşhir", occur),
+                PhraseQueryFactory(text: "ürünü", occur),
+                PhraseQueryFactory(text: "yenılenmış", occur),
+                PhraseQueryFactory(text: "yenilenmiş", occur),
+                PhraseQueryFactory(text: "ölü pixel", occur),
+                PhraseQueryFactory(text: "ölüpixel", occur),
+                PhraseQueryFactory(text: "olu pixel", occur),
+                PhraseQueryFactory(text: "olupixel", occur),
+                PhraseQueryFactory(text: "ölü piksel", occur),
+                PhraseQueryFactory(text: "ölüpiksel", occur),
+                PhraseQueryFactory(text: "olu piksel", occur),
+                PhraseQueryFactory(text: "olupiksel", occur)
             };
 
-        // Wildcard searches
-        StandardQueryParser queryParser = new StandardQueryParser(analyzer);
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "Refurbish*", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "Refurbısh*", occur));
+            // Wildcard searches
+            var queryParser = new StandardQueryParser(analyzer);
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "Refurbish*", occur));
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "Refurbısh*", occur));
 
-        // Add proximity searches (NEAR) using PhraseQuery with slop.
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"teshir ürünü\"~50", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"ikinci el\"~50", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"ıkıncı el\"~50", occur));
+            // Add proximity searches (NEAR) using PhraseQuery with slop.
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"teshir ürünü\"~50", occur));
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"ikinci el\"~50", occur));
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "\"ıkıncı el\"~50", occur));
 
-        // NEAR(("kutu*", deforme), 0)
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "kutu* deforme", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "deforme kutu*", occur));
+            // NEAR(("kutu*", deforme), 0)
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "kutu* deforme", occur));
 
-        // NEAR(("kutu*", hasarlı), 0)
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "kutu* hasarlı", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "hasarlı kutu*", occur));
+            // NEAR(("kutu*", hasarlı), 0)
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "kutu* hasarlı", occur));
 
-        // NEAR(("paket*", hasarlı), 0)
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "paket* hasarlı", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "hasarlı paket*", occur));
+            // NEAR(("paket*", hasarlı), 0)
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "paket* hasarlı", occur));
 
-        // NEAR(("ambalaj*", hasarlı), 0)
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "ambalaj* hasarlı", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "hasarlı ambalaj*", occur));
+            // NEAR(("ambalaj*", hasarlı), 0)
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "ambalaj* hasarlı", occur));
 
-        // NEAR(("nakliye*", hasarlı), 0)
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "nakliye* hasarlı", occur));
-        booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "hasarlı nakliye*", occur));
+            // NEAR(("nakliye*", hasarlı), 0)
+            booleanQuery.Add(clause: GetBooleanClause(queryParser, query: "nakliye* hasarlı", occur));
 
-        return booleanQuery;
-    }
+            return booleanQuery;
+        }
 
-    private static BooleanClause BooleanClauseFactory(string text, Occur occur)
-    {
-        return new BooleanClause(query: new TermQuery(t: new Term(fld: Field, text)), occur);
-    }
+        private static BooleanClause PhraseQueryFactory(string text, Occur occur)
+        {
+            var terms = text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-    private static BooleanClause GetBooleanClause(StandardQueryParser queryParser, string query, Occur occur)
-    {
-        return new BooleanClause(
-            query: queryParser.Parse(query, defaultField: Field),
-            occur
-        );
+            // Create a PhraseQuery with the terms in the correct order.
+            var phraseQuery = new PhraseQuery();
+
+            foreach (var term in terms)
+                phraseQuery.Add(new Term(Field, term));
+
+            return new BooleanClause(phraseQuery, occur);
+        }
+
+        private static BooleanClause GetBooleanClause(StandardQueryParser queryParser, string query, Occur occur)
+        {
+            return new BooleanClause(
+                query: queryParser.Parse(query, defaultField: Field),
+                occur
+            );
+        }
     }
 }
