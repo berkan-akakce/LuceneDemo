@@ -123,6 +123,24 @@ namespace LuceneDemo
             options: RegexOptions.IgnoreCase | RegexOptions.Compiled
         );
 
+        private static bool NonNewRegexExcluded(string input)
+        {
+            return
+                (
+                    Regex.IsMatch(input, pattern: "yenılenm[ıi]ş", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: "perwoll|bask[ıi]", RegexOptions.IgnoreCase)
+                ) ||
+                (
+                    Regex.IsMatch(input, pattern: "teşh?[ıi]r", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: @"set[ıi]|kase|kasas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|masas[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu", RegexOptions.IgnoreCase)
+                ) ||
+                (
+                    Regex.IsMatch(input, pattern: "yenılenm[ıi]ş", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: "perwoll", RegexOptions.IgnoreCase)
+                ) ||
+                Regex.IsMatch(input, pattern: "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna");
+        }
+
         private static void Main()
         {
             //const string inputFilePath = "Start213.json";
