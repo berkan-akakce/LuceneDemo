@@ -9,6 +9,18 @@ namespace LuceneDemo
 {
     internal class Program
     {
+        private static readonly Regex NonNewRegex = new Regex(
+            pattern: @"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|ürünü|yen[ıi]lenmi[sş]|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:teshir.*ürünü|[ıi]k[ıi]nc[ıi].*el)|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
+            options: RegexOptions.IgnoreCase | RegexOptions.Compiled
+        );
+
+        private static readonly string[][] NonNewExcludedPatterns =
+        {
+            new[] { "yenılenm[ıi]ş", "perwoll|bask[ıi]" },
+            new[] { "teşh?[ıi]r", @"set[ıi]|kase|kasas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|masas[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu" },
+            new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" }
+        };
+
         private static readonly string[][] BannedProductPatterns =
         {
             new[] { @"m[ıi]nox[ıi]l\w*|minoxidil\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|delay 48000\w*|xdelay 48000\w*|maflor*|sonda\w*.*idrar|idrar.*sonda\w*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(?:li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (?:ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (?:maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
@@ -118,29 +130,6 @@ namespace LuceneDemo
             new[] { "hayvan", "sa[gğ]l[ıi][gğ][ıi]", "[uü]r[uü]n[uü]" }
         };
 
-        private static readonly Regex NonNewRegex = new Regex(
-            pattern: @"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|ürünü|yen[ıi]lenmi[sş]|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:teshir.*ürünü|[ıi]k[ıi]nc[ıi].*el)|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
-            options: RegexOptions.IgnoreCase | RegexOptions.Compiled
-        );
-
-        private static bool NonNewRegexExcluded(string input)
-        {
-            return
-                (
-                    Regex.IsMatch(input, pattern: "yenılenm[ıi]ş", RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(input, pattern: "perwoll|bask[ıi]", RegexOptions.IgnoreCase)
-                ) ||
-                (
-                    Regex.IsMatch(input, pattern: "teşh?[ıi]r", RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(input, pattern: @"set[ıi]|kase|kasas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|masas[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu", RegexOptions.IgnoreCase)
-                ) ||
-                (
-                    Regex.IsMatch(input, pattern: "yenılenm[ıi]ş", RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(input, pattern: "perwoll", RegexOptions.IgnoreCase)
-                ) ||
-                Regex.IsMatch(input, pattern: "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna");
-        }
-
         private static void Main()
         {
             //const string inputFilePath = "Start213.json";
@@ -163,7 +152,7 @@ namespace LuceneDemo
             using (var reader = new JsonTextReader(file))
             {
                 var serializer = new JsonSerializer();
-                reader.Read();
+                _ = reader.Read();
 
                 while (reader.Read() && reader.TokenType != JsonToken.EndArray)
                 {
