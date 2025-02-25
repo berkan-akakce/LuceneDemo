@@ -57,7 +57,7 @@ namespace LuceneDemo
             new[] { @"(?:zayıflama|hayat|esila) çay\w*", "9" },
             new[] { "demo", "apple|samsung|iphone" },
             new[] { "merry see", "fant[ae]z[ıi]|jartiyerli deri|özel bölgesi açık|nefes kesen|kışkırtıcı|arkası açık|göz alıcı|seksi|alttan açık|fantazi slip|deri boxer|kostümü|deri takım|gelin kız|göğüs ucu" },
-            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe|kelepçesi|k[ıi]rba[cç]|nightlight|moonlight|erkek|liona" },
+            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe|kelepçesi|k[ıi]rba[cç]|(?:moon|night)light|erkek|liona" },
             new[] { "mite Love", "seksi|deri|jartiyer" },
             new[] { "seksi", "bacio|erkek|redhotbest" },
             new[] { "erkek", "g[- ]string" },
