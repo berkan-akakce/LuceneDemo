@@ -16,9 +16,11 @@ namespace LuceneDemo
 
         private static readonly string[][] NonNewExcludedPatterns =
         {
-            new[] { "yenılenm[ıi]ş", "perwoll|bask[ıi]" },
-            new[] { "teşh?[ıi]r", @"set[ıi]|kase|kasas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|masas[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu" },
-            new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" }
+            new[] { "yen[ıi]lenm[ıi][sş]", "perwoll" },
+            new[] { "teşh?[ıi]r", @"set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu" },
+            new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" },
+            new[] { "yen[ıi]lenm[ıi][sş] bask[ıi]" },
+            new[] { "bask[ıi] yen[ıi]lenm[ıi][sş]" },
         };
 
         private static readonly string[][] BannedProductPatterns =
