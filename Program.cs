@@ -11,6 +11,7 @@ namespace LuceneDemo
     {
         private static readonly string Edition = "bask[ıi]";
         private static readonly string Refurbished = "yen[ıi]lenm[ıi][sş]";
+
         private static readonly Regex NonNewRegex = new Regex(
             pattern: @"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|ürünü|yen[ıi]lenmi[sş]|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:teshir.*ürünü|[ıi]k[ıi]nc[ıi].*el)|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
             options: RegexOptions.IgnoreCase | RegexOptions.Compiled
@@ -57,7 +58,7 @@ namespace LuceneDemo
             new[] { @"(?:zayıflama|hayat|esila) çay\w*", "9" },
             new[] { "demo", "apple|samsung|iphone" },
             new[] { "merry see", "fant[ae]z[ıi]|jartiyerli deri|özel bölgesi açık|nefes kesen|kışkırtıcı|arkası açık|göz alıcı|seksi|alttan açık|fantazi slip|deri boxer|kostümü|deri takım|gelin kız|göğüs ucu" },
-            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe|kelepçesi|k[ıi]rba[cç]|(?:moon|night)light|erkek|liona" },
+            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe(:?si)?|k[ıi]rba[cç]|(?:moon|night)light|erkek|liona" },
             new[] { "mite Love", "seksi|deri|jartiyer" },
             new[] { "seksi", "bacio|erkek|redhotbest" },
             new[] { "erkek", "g[- ]string" },
@@ -191,14 +192,14 @@ namespace LuceneDemo
             return
                 ShouldBan(input) ||
                 (
-                    Regex.IsMatch(input, pattern: "ereksiyon|vajina", RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "jel|solüsyon", RegexOptions.IgnoreCase)
+                    Regex.IsMatch(input, pattern: "ereksiyon|vajina", options: RegexOptions.IgnoreCase) &&
+                    !Regex.IsMatch(input, pattern: "jel|solüsyon", options: RegexOptions.IgnoreCase)
                 ) ||
                 (
-                    Regex.IsMatch(input, pattern: "silver shell", RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(input, pattern: "ahcc", RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "shiitake", RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "hexose", RegexOptions.IgnoreCase)
+                    Regex.IsMatch(input, pattern: "silveroptions:  shell", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: "ahcc", options: RegexOptions.IgnoreCase) &&
+                    !Regex.IsMatch(input, pattern: "shiitake", options: RegexOptions.IgnoreCase) &&
+                    !Regex.IsMatch(input, pattern: "hexose", options: RegexOptions.IgnoreCase)
                 );
         }
     }
