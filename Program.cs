@@ -196,7 +196,7 @@ namespace LuceneDemo
                     !Regex.IsMatch(input, pattern: "jel|solüsyon", options: RegexOptions.IgnoreCase)
                 ) ||
                 (
-                    Regex.IsMatch(input, pattern: "silveroptions:  shell", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: "silver shell", RegexOptions.IgnoreCase) &&
                     Regex.IsMatch(input, pattern: "ahcc", options: RegexOptions.IgnoreCase) &&
                     !Regex.IsMatch(input, pattern: "shiitake", options: RegexOptions.IgnoreCase) &&
                     !Regex.IsMatch(input, pattern: "hexose", options: RegexOptions.IgnoreCase)
