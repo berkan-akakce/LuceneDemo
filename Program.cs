@@ -9,6 +9,8 @@ namespace LuceneDemo
 {
     internal class Program
     {
+        private static readonly string Edition = "bask[ıi]";
+        private static readonly string Refurbished = "yen[ıi]lenm[ıi][sş]";
         private static readonly Regex NonNewRegex = new Regex(
             pattern: @"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|ürünü|yen[ıi]lenmi[sş]|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:teshir.*ürünü|[ıi]k[ıi]nc[ıi].*el)|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
             options: RegexOptions.IgnoreCase | RegexOptions.Compiled
@@ -16,11 +18,11 @@ namespace LuceneDemo
 
         private static readonly string[][] NonNewExcludedPatterns =
         {
-            new[] { "yen[ıi]lenm[ıi][sş]", "perwoll" },
+            new[] { Refurbished, "perwoll" },
             new[] { "teşh?[ıi]r", @"set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu" },
             new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" },
-            new[] { "yen[ıi]lenm[ıi][sş] bask[ıi]" },
-            new[] { "bask[ıi] yen[ıi]lenm[ıi][sş]" },
+            new[] { $"{Refurbished} {Edition}" },
+            new[] { $"{Edition} {Refurbished}" },
         };
 
         private static readonly string[][] BannedProductPatterns =
