@@ -155,27 +155,29 @@ namespace LuceneDemo
             using (StreamReader file = File.OpenText(inputFilePath))
             using (var reader = new JsonTextReader(file))
             {
-                var serializer = new JsonSerializer();
-                _ = reader.Read();
-
-                while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+                if (reader.Read())
                 {
-                    if (reader.TokenType != JsonToken.StartObject)
-                        continue;
+                    var serializer = new JsonSerializer();
 
-                    var product = serializer.Deserialize<Product>(reader);
+                    while (reader.Read() && reader.TokenType != JsonToken.EndArray)
+                    {
+                        if (reader.TokenType != JsonToken.StartObject)
+                            continue;
 
-                    if (BannedRegexIsMatch(product.Name))
-                        matchedProducts.Add(product.Name);
-                    else
-                        unMatchedProducts.Add(product.Name);
+                        var product = serializer.Deserialize<Product>(reader);
+
+                        if (BannedRegexIsMatch(product.Name))
+                            matchedProducts.Add(product.Name);
+                        else
+                            unMatchedProducts.Add(product.Name);
+                    }
+
+                    if (matchedProducts.Count != 0)
+                        File.WriteAllLines(outputFilePath, matchedProducts);
+
+                    foreach (var product in unMatchedProducts)
+                        Console.WriteLine(product);
                 }
-
-                if (matchedProducts.Count != 0)
-                    File.WriteAllLines(outputFilePath, matchedProducts);
-
-                foreach (var product in unMatchedProducts)
-                    Console.WriteLine(product);
             }
         }
 
