@@ -15,4 +15,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="bin\Debug\net48\Start213.json" />
+    <None Include="bin\Debug\net48\Start216.json" />
+    <None Include="bin\Debug\net48\StartNoError.json" />
+  </ItemGroup>
+
 </Project>

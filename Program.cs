@@ -20,7 +20,7 @@ namespace LuceneDemo
         private static readonly string[][] NonNewExcludedPatterns =
         {
             new[] { Refurbished, "perwoll" },
-            new[] { "teşh?[ıi]r", @"set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu" },
+            new[] { "teşh?[ıi]r", @"\b(?:set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu)\b" },
             new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" },
             new[] { $"{Refurbished} {Edition}" },
             new[] { $"{Edition} {Refurbished}" },
@@ -138,8 +138,8 @@ namespace LuceneDemo
 
         private static void Main()
         {
-            const string inputFilePath = "Start216.json";
-            const string outputFilePath = "matchedProducts.txt";
+            const string inputFilePath = "Start213.json";
+            const string outputFilePath = "matchedProducts213.txt";
             var matchedProducts = new List<string>();
             var unMatchedProducts = new List<string>();
 
@@ -158,7 +158,7 @@ namespace LuceneDemo
 
                     var product = serializer.Deserialize<Product>(reader);
 
-                    if (BannedRegexIsMatch(product.Name))
+                    if (NonNewRegexIsMatch(input: product.Name))
                         matchedProducts.Add(product.Name);
                     else
                         unMatchedProducts.Add(product.Name);
@@ -172,15 +172,27 @@ namespace LuceneDemo
             }
         }
 
-        private static bool ShouldBan(string input)
+        private static bool DoesMatchPatternGroup(string input, IEnumerable<string[]> patterns)
         {
-            return BannedProductPatterns.Any(array => array.All(pattern => Regex.IsMatch(input, pattern, options: RegexOptions.IgnoreCase)));
+            return
+                patterns.Any(
+                    predicate: array => array.All(
+                        predicate: pattern => Regex.IsMatch(input, pattern, options: RegexOptions.IgnoreCase)
+                    )
+                );
+        }
+
+        private static bool NonNewRegexIsMatch(string input)
+        {
+            return
+                NonNewRegex.IsMatch(input) &&
+                !DoesMatchPatternGroup(input, patterns: NonNewExcludedPatterns);
         }
 
         private static bool BannedRegexIsMatch(string input)
         {
             return
-                ShouldBan(input) ||
+                DoesMatchPatternGroup(input, patterns: BannedProductPatterns) ||
                 (
                     Regex.IsMatch(input, pattern: "ereksiyon|vajina", options: RegexOptions.IgnoreCase) &&
                     !Regex.IsMatch(input, pattern: "jel|solüsyon", options: RegexOptions.IgnoreCase)
