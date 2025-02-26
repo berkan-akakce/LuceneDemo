@@ -39,109 +39,129 @@ namespace LuceneDemo
             options: options | RegexOptions.Compiled
         );
 
+        private static readonly Regex VibratorRegex = new Regex(
+            pattern: @"anal|b(elden|üyük)|cm|dokulu|gerçekçi|külot|mini|prostat|seks|t(eknolojik|estis\w*|ıkaç)|uyarıcı|(kıvrım|duyar)lı",
+            options: options | RegexOptions.Compiled
+        );
+
+        private static readonly Regex FantasyRegex = new Regex(
+            pattern: @"bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(:?si)?|ostüm)|l(ablinque|iona)|m(ayokini|el bee|ite love)|seksi|vixson|(moon|night)light",
+            options: options | RegexOptions.Compiled
+        );
+
+        private static readonly Regex MerrySeeRegex = new Regex(
+            pattern: @"a(lttan açık|rkası açık)|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö(z alıcı|ğüs ucu))|jartiyerli deri|k(ostümü|ışkırtıcı)|nefes kesen|seksi",
+            options: options | RegexOptions.Compiled
+        );
+
+        private static readonly Regex DijitsuRegex = new Regex(
+            pattern: @"(ov(3215|4(2|3)25)|5035|(65|75F)50)0|ax(32dab(04|13)|50f[ıi]l242|43d[ıi]l13)|(32|43|50|55|65)ds((85|(8|9)8)00)",
+            options: options | RegexOptions.Compiled
+        );
+
+        private static readonly Regex SerumRegex = new Regex(
+            pattern: "a(nkamarin|qua(nose|ser))|b([ıi]of[ıi]z|aby(right|soin)|e(bsi|snim)|ronsept)|ccmed|doctormed|fizyo(es|ser|naz|sol)?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|almer|omer)|opti|rinomer|se(nte|ptomer)|thomson|wee(baby)?",
+            options: options | RegexOptions.Compiled
+        );
+
         private static readonly string[][] BannedProductPatterns =
         {
+            new[] { "babydoll", "açık|dantel|fant[ae]z[ıi]|jartiyer|gecelik" },
+            new[] { "seksi", "bacio|erkek|redhotbest" },
             new[] { @"\banal\b", "t(op|ıkaç)|vakum|plug" },
-            new[] { "vibrat[oö]r", @"anal|b(elden|üyük)|cm|dokulu|gerçekçi|külot|mini|prostat|seks|t(eknolojik|estis\w*|ıkaç)|uyarıcı|(kıvrım|duyar)lı" },
+            new[] { "titreşim(li)?", "vibrat[oö]r" },
+            new[] { "enjekt[oö]r", "ucu" },
+            new[] { "muayene", "masas[ıi]|lambas[ıi]"},
+            new[] { "pansuman", "arabas[ıi]" },
+            new[] { "erkek", "g[- ]string" },
+            new[] { "cerrahi", "dikiş" },
+            new[] { "valorant", @"\bvp\b" },
+            new[] { "steam", "key|c[uü]zdan" },
+            new[] { "elektronik", "sigara" },
+            new[] { "pubg", @"\buc\b" },
+            new[] { "serum", "ask[ıi]s[ıi]"},
+            new[] { "idrar", "s(onda|tribi)" },
+            new[] { "sıvı|toz|zirai", "k[uü]k[uü]rt" },
+            new[] { "legends", "riot" },
+            new[] { "feti[sş]", "(kemer|set)" },
+            new[] { "mobile", "legends", "elmas" },
+            new[] { "salyangoz|külleme|akar|çekirge|mildiyö", "ilac[ıi]|yem[ıi]" },
+            new[] { "bordo", "bulamac[ıi]" },
+            new[] { "keton", "[oö]l[cç][uü]m" },
+            new[] { "istek", "damla" },
+            new[] { "origin", @"\b(cd|key)\b" },
+            new[] { "erotik", "denge|oyun|film" },
+            new[] { @"\bpsn\b", "network|card|key" },
+            new[] { "lescon", "[ck]ampus" },
+            new[] { "hediye", "kartı" },
+            new[] { "b[oö]brek", "k[uü]veti" },
+            new[] { "ha[sş]ere", "k[uü]k[uü]rd[uü]|[ıi]lac[ıi]" },
+            new[] { "point", "blank", @"\btg\b" },
+            new[] { "aspiratör", "portatif" },
+            new[] { "ejder", "paras[ıi]" },
+            new[] { "stim[uü]lat[oö]r", "cihaz[ıi]" },
+            new[] { "göz", "eşeli" },
+            new[] { "knight", "cash" },
+            new[] { "demo", "apple|samsung|iphone" },
+            new[] { "kan", "alma", "koltuğu"},
+            new[] { "google|itunes", "hediye|[ck]ar[dt]ı?|gift" },
+            new[] { "tarım", "k[uü]k[uü]rd[uü]|ilacı" },
+            new[] { "rüzgar", "ocak", "([234]|(iki|üç|dört)) gözlü|set üstü( lpg)?|[234]'l[iü]|set ütü doğalgaz" },
+            new[] { "r[oö]hnfried", "usnegano" },
+            new[] { "uraw", "mavi|blue" },
+            new[] { "dijital", "abonelik" },
+            new[] { "veteriner", "[uü]r[uü]n[uü]" },
+            new[] { "seks", "salıncağı" },
+            new[] { "kırmızı", "örümcek", "ilac[ıi]" },
+            new[] { "ot", "kurutucu" },
+            new[] { "tinder", "abone" },
+            new[] { "theravet", "krem|s(ıvı|olüsyon)|tablet" },
+            new[] { "yaprak", "biti", "ilac[ıi]" },
+            new[] { "l[ıi]fe", "tea", "9" },
+            new[] { "bitki", "gelişim", "düzenleyicisi|[uü]yar[ıi]c[ıi]" },
+            new[] { "jinekolojik", "masa" },
+            new[] { "antibiyotik", "toz|oregano" },
+            new[] { "yaşam", "çift", "battaniye" },
+            new[] { "yabancı|kurutma", "ot", "ilac[ıi]" },
+            new[] { @"hemen|uplay|\bpc\b", @"\bcd\b", "key" },
+            new[] { "(zayıflama|hayat|esila) çay", "9" },
             new[] { "almera", "golyat" },
             new[] { "ambu", "cihaz[ıi]" },
-            new[] { "antibiyotik", "toz|oregano" },
             new[] { "antifungal", "ila[cç]" },
-            new[] { "aspiratör", "portatif" },
-            new[] { "b[oö]brek", "k[uü]veti" },
-            new[] { "babydoll", "açık|dantel|fant[ae]z[ıi]|jartiyer|gecelik" },
-            new[] { "bein", "connect", @"ay\w*" },
-            new[] { "bordo", "bulamac[ıi]" },
-            new[] { "cerrahi", "dikiş" },
-            new[] { "d[ıi]j[ıi]tsu|onvo|axen", "(ov(3215|4(2|3)25)|5035|(65|75F)50)0|ax(32dab(04|13)|50f[ıi]l242|43d[ıi]l13)|(32|43|50|55|65)ds((85|(8|9)8)00)" },
-            new[] { "demo", "apple|samsung|iphone" },
-            new[] { "dijital", "abonelik" },
-            new[] { "ejder", "paras[ıi]" },
-            new[] { "elektronik", "sigara" },
-            new[] { "enjekt[oö]r", "ucu" },
-            new[] { @"\bera\b", "aroma" },
-            new[] { "erkek", "g[- ]string" },
-            new[] { "erotik", "(denge|oyun)|film" },
-            new[] { "fant[ae]z[ıi]", "bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(:?si)?|ostüm)|l(ablinque|iona)|m(ayokini|el bee|ite love)|seksi|vixson|(moon|night)light" },
-            new[] { "fast", "delivery" },
-            new[] { "feti[sş]", "(kemer|set)" },
-            new[] { "game", "pass", @"\bay\b" },
-            new[] { "google|itunes", "hediye|[ck]ar[dt]ı?|gift" },
-            new[] { "göz", "eşeli" },
-            new[] { "ha[sş]ere", "k[uü]k[uü]rd[uü]|[ıi]lac[ıi]" },
-            new[] { "hediye", "kartı" },
-            new[] { "hemen", "üyelik" },
-            new[] { "henkel", "maske" },
-            new[] { "hn 25", "anti-ishal" },
-            new[] { "idrar", "s(onda|tribi)" },
-            new[] { "istek", "damla" },
-            new[] { "jinekolojik", "masa" },
-            new[] { "kamagra", "jel" },
-            new[] { "keton", "[oö]l[cç][uü]m" },
-            new[] { "knight", "cash" },
-            new[] { "l[ıi]fe", "tea", "9" },
-            new[] { "legends", "riot" },
-            new[] { "m[uü]d[ae]hale", "sedye"},
-            new[] { "medika", "sarf" },
-            new[] { "merry see", "a(lttan açık|rkası açık)|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö(z alıcı|ğüs ucu))|jartiyerli deri|k(ostümü|ışkırtıcı)|nefes kesen|seksi" },
-            new[] { "mite Love", "deri|jartiyer|seksi" },
-            new[] { "mobile", "legends", "elmas" },
-            new[] { "muayene", "masas[ıi]|lambas[ıi]"},
-            new[] { "mueller", "diz"},
-            new[] { "netflix", "gift" },
-            new[] { "netflix", "hediye", "kartı" },
-            new[] { "nikotin", "(sakız|band)[ıi]" },
-            new[] { "opti", "free" },
-            new[] { "origin", @"\b(cd|key)\b" },
-            new[] { "ot", "kurutucu" },
-            new[] { "pansuman", "arabas[ıi]" },
-            new[] { "patates", "böceği", "ilac[ıi]" },
-            new[] { @"\bpsn\b", "network|card|key" },
-            new[] { "pubg", @"\buc\b" },
-            new[] { "r[oö]hnfried", "usnegano" },
-            new[] { "rosenna", "gül suyu" },
-            new[] { "rüzgar", "ocak", "([234]|(iki|üç|dört)) gözlü|set üstü( lpg)?|[234]'l[iü]|set ütü doğalgaz" },
-            new[] { "salyongoz", "yem[ıi]" },
-            new[] { "salyangoz|külleme|akar|çekirge|mildiyö", "ilac[ıi]|yem[ıi]" },
-            new[] { "seks", "salıncağı" },
-            new[] { "seksi", "bacio|erkek|redhotbest" },
-            new[] { "serum", "ask[ıi]s[ıi]"},
-            new[] { "serum fizyolojik|flakon", "a(nkamarin|qua(nose|ser))|b([ıi]of[ıi]z|aby(right|soin)|e(bsi|snim)|ronsept)|ccmed|doctormed|fizyo(es|ser|naz|sol)?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|almer|omer)|opti|rinomer|se(nte|ptomer)|thomson|wee(baby)?" },
-            new[] { "steam", "key|c[uü]zdan" },
-            new[] { "stim[uü]lat[oö]r", "cihaz[ıi]" },
-            new[] { "sıvı|toz|zirai", "k[uü]k[uü]rt" },
-            new[] { "tarım", "k[uü]k[uü]rd[uü]|ilacı" },
-            new[] { "tinder", @"abone\w*" },
-            new[] { "titreşim(li)?", "vibrat[oö]r" },
-            new[] { "uraw", "mavi|blue" },
-            new[] { "valorant", "vp" },
-            new[] { "varino", "varis" },
-            new[] { "veteriner", "[uü]r[uü]n[uü]" },
             new[] { "anında", "teslim", "key" },
             new[] { "apple", "store", "itunes" },
             new[] { "aptamil", @"\bar\b", "anti-reflü" },
             new[] { "aspgemix", "sarı", "köpük" },
             new[] { "avene", @"tr[ıi]acneal" },
-            new[] { "bitki", "gelişim", "düzenleyicisi|[uü]yar[ıi]c[ıi]" },
+            new[] { "bein", "connect", @"\bay" },
             new[] { "demir", "şurubu", "[ıi]ron ?bis|pediatr[ıi]k" },
+            new[] { "fast", "delivery" },
+            new[] { "game", "pass", @"\bay\b" },
             new[] { "hasta", "muayene", "masası"},
             new[] { "hayvan", "sa[gğ]l[ıi][gğ][ıi]", "[uü]r[uü]n[uü]" },
-            new[] { "kan", "alma", "koltuğu"},
-            new[] { "kırmızı", "örümcek", "ilac[ıi]" },
-            new[] { "lescon", "[ck]ampus" },
-            new[] { "point", "blank", @"\btg\b" },
+            new[] { "hemen", "üyelik" },
+            new[] { "henkel", "maske" },
+            new[] { "hn 25", "anti-ishal" },
+            new[] { "kamagra", "jel" },
+            new[] { "m[uü]d[ae]hale", "sedye"},
+            new[] { "medikal", "sarf" },
+            new[] { "mite Love", "deri|jartiyer|seksi" },
+            new[] { "mueller", "diz"},
+            new[] { "netflix", "gift" },
+            new[] { "netflix", "hediye", "kartı" },
+            new[] { "nikotin", "(sakız|band)[ıi]" },
+            new[] { "opti", "free" },
+            new[] { "patates", "böceği", "ilac[ıi]" },
             new[] { "proles", "yangın", "köpük" },
             new[] { "razer", "gold", @"\btr\b" },
+            new[] { "rosenna", "gül suyu" },
+            new[] { "salyongoz", "yem[ıi]" },
             new[] { "sümüklü", "böcek", "yem[ıi]" },
-            new[] { "theravet", "krem|s(ıvı|olüsyon)|tablet" },
-            new[] { "vernel", "oda", @"koku\w*" },
+            new[] { "varino", "varis" },
+            new[] { "vernel", "oda", "koku" },
             new[] { "xbox", "ay", "3" },
-            new[] { "yabancı|kurutma", "ot", "ilac[ıi]" },
-            new[] { "yaprak", "biti", "ilac[ıi]" },
-            new[] { "yaşam", "çift", "battaniye" },
             new[] { "ön", "ödemeli", "kart" },
-            new[] { @"hemen|uplay|\bpc\b", @"\bcd\b", "key" },
-            new[] { "(zayıflama|hayat|esila) çay", "9" }
+            new[] { @"\bera\b", "aroma" }
         };
 
         private static void Main()
@@ -220,7 +240,27 @@ namespace LuceneDemo
         {
             return
                 BannedProductRegex.IsMatch(input) ||
+                (
+                    Regex.IsMatch(input, pattern: "vibrat[oö]r", options) &&
+                    VibratorRegex.IsMatch(input)
+                ) ||
+                (
+                    Regex.IsMatch(input, pattern: "fant[ae]z[ıi]", options) &&
+                    FantasyRegex.IsMatch(input)
+                ) ||
                 DoesMatchPatternGroup(input, patterns: BannedProductPatterns) ||
+                (
+                    Regex.IsMatch(input, pattern: "merry see", options) &&
+                    MerrySeeRegex.IsMatch(input)
+                ) ||
+                (
+                    Regex.IsMatch(input, pattern: "d[ıi]j[ıi]tsu|onvo|axen", options) &&
+                    DijitsuRegex.IsMatch(input)
+                ) ||
+                (
+                    Regex.IsMatch(input, pattern: "serum fizyolojik|flakon", options) &&
+                    SerumRegex.IsMatch(input)
+                ) ||
                 (
                     Regex.IsMatch(input, pattern: "ereksiyon|vajina", options) &&
                     !Regex.IsMatch(input, pattern: "jel|solüsyon", options)
