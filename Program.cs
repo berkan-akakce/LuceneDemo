@@ -13,22 +13,22 @@ namespace LuceneDemo
         private static readonly string Refurbished = "yen[ıi]lenm[ıi][sş]";
 
         private static readonly Regex NonNewRegex = new Regex(
-            pattern: $@"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|{Refurbished}|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
+            pattern: $@"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|{Refurbished}|[oö]l[uü] ?p[ıi](ks|x)el|refurb[ıi]sh\w*|(nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
             options: RegexOptions.IgnoreCase | RegexOptions.Compiled
         );
 
         private static readonly string[][] NonNewExcludedPatterns =
         {
             new[] { Refurbished, "perwoll" },
-            new[] { "teşh?[ıi]r", @"\b(?:set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu)\b" },
-            new[] { "\b(?:air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna)\b" },
+            new[] { "teşh?[ıi]r", @"\b(set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu)\b" },
+            new[] { "\b(air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(açık)?büfe|ayna)\b" },
             new[] { $"{Refurbished} {Edition}" },
             new[] { $"{Edition} {Refurbished}" },
         };
 
         private static readonly string[][] BannedProductPatterns =
         {
-            new[] { @"m[ıi]nox[ıi](?:d[ıi])?l\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|x?delay 48000\w*|maflor*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(?:li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (?:ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (?:maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
+            new[] { @"m[ıi]nox[ıi](d[ıi])?l\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|x?delay 48000\w*|maflor*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
             new[] { "uraw", "mavi|blue" },
             new[] { "idrar", @"sonda\w*" },
             new[] { @"avene\w*", @"tr[ıi]acneal\w*" },
@@ -36,7 +36,7 @@ namespace LuceneDemo
             new[] { "istek", "damla" },
             new[] { "anal", "top|tıkaç|vakum|plug" },
             new[] { "vibrat[oö]r", @"testis\w*|belden|teknolojik|tıkaç|cm|külot\w*|anal|uyarıcı|seks|dokulu|büyük|gerçekçi|mini|kıvrımlı|duyarlı|prostat" },
-            new[] { "nikotin", "(?:sakız|band)[ıi]" },
+            new[] { "nikotin", "(sakız|band)[ıi]" },
             new[] { "medika", "sarf" },
             new[] { "keton", "[oö]l[cç][uü]m" },
             new[] { "idrar", "stribi" },
@@ -56,10 +56,10 @@ namespace LuceneDemo
             new[] { "aspiratör", "portatif" },
             new[] { "ambu", "cihaz[ıi]" },
             new[] { "l[ıi]fe", "tea", "9" },
-            new[] { @"(?:zayıflama|hayat|esila) çay\w*", "9" },
+            new[] { @"(zayıflama|hayat|esila) çay\w*", "9" },
             new[] { "demo", "apple|samsung|iphone" },
             new[] { "merry see", "fant[ae]z[ıi]|jartiyerli deri|özel bölgesi açık|nefes kesen|kışkırtıcı|arkası açık|göz alıcı|seksi|alttan açık|fantazi slip|deri boxer|kostümü|deri takım|gelin kız|göğüs ucu" },
-            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe(:?si)?|k[ıi]rba[cç]|(?:moon|night)light|erkek|liona" },
+            new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe(:?si)?|k[ıi]rba[cç]|(moon|night)light|erkek|liona" },
             new[] { "mite Love", "seksi|deri|jartiyer" },
             new[] { "seksi", "bacio|erkek|redhotbest" },
             new[] { "erkek", "g[- ]string" },
@@ -102,10 +102,10 @@ namespace LuceneDemo
             new[] { "henkel", "maske" },
             new[] { "aspgemix", "sarı", "köpük" },
             new[] { "proles", "yangın", "köpük" },
-            new[] { "feti[sş]", @"(?:kemer|set)\w*" },
+            new[] { "feti[sş]", @"(kemer|set)\w*" },
             new[] { "seks", "salıncağı" },
-            new[] { "titreşim(?:li)?", "vibrat[oö]r" },
-            new[] { "erotik", @"(?:denge|oyun)\w*|film" },
+            new[] { "titreşim(li)?", "vibrat[oö]r" },
+            new[] { "erotik", @"(denge|oyun)\w*|film" },
             new[] { "yaşam", @"çift\w*", "battaniye" },
             new[] { "babydoll", "fant[ae]z[ıi]|jartiyer|dantel|gecelik" },
             new[] { "almera", "golyat" },
@@ -113,8 +113,8 @@ namespace LuceneDemo
             new[] { "era", @"aroma\w*" },
             new[] { @"theravet\w*", "tablet|solüsyon|krem|sıvı" },
             new[] { "serum fizyolojik|flakon", "wee|weebaby|miraderm|bebsi|fizyoser|b[ıi]of[ıi]z|thomson|minich|ime dc|fizyoes|babysoin|septomer|fizyonaz|aquaser|nasalmer|fizyo|ccmed|rinomer|nasobaby|gogove|opti|[ıi]me|babyright|iyon|nasomer|aquanose|fizyosol|doctormed|sente|bronsept|megafiz|ankamarin|besnim" },
-            new[] { "d[ıi]j[ıi]tsu|onvo|axen", @"(ov(?:32150|42250|43250|50350|65500|75F500)|ax(?:32DAB04|32DAB13|50f[ıi]l242|43d[ıi]L13)|32DS8500|32DS9800|43DS9800|50DS8800|50DS9800|55DS8500|65DS8500|65DS8800)\w*" },
-            new[] { "rüzgar", "ocak", "([234]|(?:iki|üç|dört)) gözlü|set üstü(?: lpg)?|[234]'l[iü]|set ütü doğalgaz" },
+            new[] { "d[ıi]j[ıi]tsu|onvo|axen", @"(ov(32150|42250|43250|50350|65500|75F500)|ax(32DAB04|32DAB13|50f[ıi]l242|43d[ıi]L13)|32DS8500|32DS9800|43DS9800|50DS8800|50DS9800|55DS8500|65DS8500|65DS8800)\w*" },
+            new[] { "rüzgar", "ocak", "([234]|(iki|üç|dört)) gözlü|set üstü( lpg)?|[234]'l[iü]|set ütü doğalgaz" },
             new[] { @"lescon\w*", "[ck]ampus" },
             new[] { "tarım", "k[uü]k[uü]rd[uü]|ilacı" },
             new[] { "sıvı|toz|zirai", "k[uü]k[uü]rt" },
