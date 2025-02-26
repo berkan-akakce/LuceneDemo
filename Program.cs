@@ -9,12 +9,17 @@ namespace LuceneDemo
 {
     internal class Program
     {
+        private static readonly RegexOptions options = RegexOptions.IgnoreCase;
+
         private static readonly string Edition = "bask[ıi]";
         private static readonly string Refurbished = "yen[ıi]lenm[ıi][sş]";
+        private static readonly string DeadPixel = "[oö]l[uü] ?p[ıi](ks|x)el";
+        private static readonly string Box = "(nakliye|ambalaj|paket|kutu)\\w*";
+        private static readonly string Damaged = "hasarl[ıi]";
 
         private static readonly Regex NonNewRegex = new Regex(
-            pattern: $@"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|{Refurbished}|[oö]l[uü] ?p[ıi](ks|x)el|refurb[ıi]sh\w*|(nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
-            options: RegexOptions.IgnoreCase | RegexOptions.Compiled
+            pattern: $@"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|{Refurbished}|{DeadPixel}|refurb[ıi]sh\w*|{Box} {Damaged}|{Damaged} {Box}|kutu\w* deforme|deforme kutu\w*",
+            options: options | RegexOptions.Compiled
         );
 
         private static readonly string[][] NonNewExcludedPatterns =
@@ -26,9 +31,13 @@ namespace LuceneDemo
             new[] { $"{Edition} {Refurbished}" },
         };
 
+        private static readonly Regex BannedProductRegex = new Regex(
+            pattern: @"m[ıi]nox[ıi](d[ıi])?l\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|x?delay 48000\w*|maflor*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (maymunu|boncuğu|jeli)|büyüyen su topları|bakırsülfat|g[oö]zta[sş][ıi]|([ıi]nsekti|akari|herbi|nemati|fungu|antipara)[sz]it|fumigant|allicin|varroa",
+            options: options | RegexOptions.Compiled
+        );
+
         private static readonly string[][] BannedProductPatterns =
         {
-            new[] { @"m[ıi]nox[ıi](d[ıi])?l\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|x?delay 48000\w*|maflor*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
             new[] { "uraw", "mavi|blue" },
             new[] { "idrar", @"sonda\w*" },
             new[] { @"avene\w*", @"tr[ıi]acneal\w*" },
@@ -58,7 +67,7 @@ namespace LuceneDemo
             new[] { "l[ıi]fe", "tea", "9" },
             new[] { @"(zayıflama|hayat|esila) çay\w*", "9" },
             new[] { "demo", "apple|samsung|iphone" },
-            new[] { "merry see", "fant[ae]z[ıi]|jartiyerli deri|özel bölgesi açık|nefes kesen|kışkırtıcı|arkası açık|göz alıcı|seksi|alttan açık|fantazi slip|deri boxer|kostümü|deri takım|gelin kız|göğüs ucu" },
+            new[] { "merry see", "fant[ae]z[ıi]|jartiyerli deri|nefes kesen|kışkırtıcı|arkası açık|göz alıcı|seksi|alttan açık|fantazi slip|deri boxer|kostümü|deri takım|gelin kız|göğüs ucu" },
             new[] { "fant[ae]z[ıi]", "mite love|eldiven|duvaklı|kostüm|emay|gecel[ıi]k|elbise|mayokini|jartiyerli|mel bee|bacio|vixson|deri|seksi|lablinque|kelepçe(:?si)?|k[ıi]rba[cç]|(moon|night)light|erkek|liona" },
             new[] { "mite Love", "seksi|deri|jartiyer" },
             new[] { "seksi", "bacio|erkek|redhotbest" },
@@ -177,7 +186,7 @@ namespace LuceneDemo
             return
                 patterns.Any(
                     predicate: array => array.All(
-                        predicate: pattern => Regex.IsMatch(input, pattern, options: RegexOptions.IgnoreCase)
+                        predicate: pattern => Regex.IsMatch(input, pattern, options)
                     )
                 );
         }
@@ -188,12 +197,12 @@ namespace LuceneDemo
                 (
                     NonNewRegex.IsMatch(input) ||
                     (
-                        Regex.IsMatch(input, pattern: "[ıi]k[ıi]nc[ıi]", options: RegexOptions.IgnoreCase) &&
-                        Regex.IsMatch(input, pattern: "el", options: RegexOptions.IgnoreCase)
+                        Regex.IsMatch(input, pattern: "[ıi]k[ıi]nc[ıi]", options) &&
+                        Regex.IsMatch(input, pattern: "el", options)
                     ) ||
                     (
-                        Regex.IsMatch(input, pattern: "te[sş]hir", options: RegexOptions.IgnoreCase) &&
-                        Regex.IsMatch(input, pattern: "[uü]r[uü]n[uü]", options: RegexOptions.IgnoreCase)
+                        Regex.IsMatch(input, pattern: "te[sş]hir", options) &&
+                        Regex.IsMatch(input, pattern: "[uü]r[uü]n[uü]", options)
                     )
                 ) &&
                 !DoesMatchPatternGroup(input, patterns: NonNewExcludedPatterns);
@@ -202,16 +211,17 @@ namespace LuceneDemo
         private static bool BannedRegexIsMatch(string input)
         {
             return
+                BannedProductRegex.IsMatch(input) ||
                 DoesMatchPatternGroup(input, patterns: BannedProductPatterns) ||
                 (
-                    Regex.IsMatch(input, pattern: "ereksiyon|vajina", options: RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "jel|solüsyon", options: RegexOptions.IgnoreCase)
+                    Regex.IsMatch(input, pattern: "ereksiyon|vajina", options) &&
+                    !Regex.IsMatch(input, pattern: "jel|solüsyon", options)
                 ) ||
                 (
-                    Regex.IsMatch(input, pattern: "silver shell", options: RegexOptions.IgnoreCase) &&
-                    Regex.IsMatch(input, pattern: "ahcc", options: RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "shiitake", options: RegexOptions.IgnoreCase) &&
-                    !Regex.IsMatch(input, pattern: "hexose", options: RegexOptions.IgnoreCase)
+                    Regex.IsMatch(input, pattern: "silver shell", options) &&
+                    Regex.IsMatch(input, pattern: "ahcc", options) &&
+                    !Regex.IsMatch(input, pattern: "shiitake", options) &&
+                    !Regex.IsMatch(input, pattern: "hexose", options)
                 );
         }
     }
