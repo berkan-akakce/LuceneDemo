@@ -44,8 +44,8 @@ namespace LuceneDemo
             new[] { @"avene\w*", @"tr[ıi]acneal\w*" },
             new[] { "opti", "free" },
             new[] { "istek", "damla" },
-            new[] { "\banal\b", "top|tıkaç|vakum|plug" },
-            new[] { "vibrat[oö]r", @"testis\w*|belden|teknolojik|tıkaç|cm|külot\w*|anal|uyarıcı|seks|dokulu|büyük|gerçekçi|mini|kıvrımlı|duyarlı|prostat" },
+            new[] { @"\banal\b", "top|tıkaç|vakum|plug" },
+            new[] { "vibrat[oö]r", @"testis\w*|belden|teknolojik|tıkaç|cm|külot\w*|anal|uyarıcı|seks|dokulu|büyük|gerçekçi|mini|(kıvrım|duyar)lı|prostat" },
             new[] { "nikotin", "(sakız|band)[ıi]" },
             new[] { "medika", "sarf" },
             new[] { "keton", "[oö]l[cç][uü]m" },
@@ -122,7 +122,7 @@ namespace LuceneDemo
             new[] { "elektronik", "sigara" },
             new[] { "era", @"aroma\w*" },
             new[] { @"theravet\w*", "tablet|solüsyon|krem|sıvı" },
-            new[] { "serum fizyolojik|flakon", "wee|weebaby|miraderm|bebsi|fizyoser|b[ıi]of[ıi]z|thomson|minich|ime dc|fizyoes|babysoin|septomer|fizyonaz|aquaser|nasalmer|fizyo|ccmed|rinomer|nasobaby|gogove|opti|[ıi]me|babyright|iyon|nasomer|aquanose|fizyosol|doctormed|sente|bronsept|megafiz|ankamarin|besnim" },
+            new[] { "serum fizyolojik|flakon", "wee(baby)?|miraderm|bebsi|fizyo(es|ser)|b[ıi]of[ıi]z|thomson|minich|ime dc|baby(right|soin)|septomer|fizyonaz|aquaser|nas(obaby|almer)|fizyo|ccmed|rinomer|gogove|opti|[ıi]me|iyon|nasomer|aquanose|fizyosol|doctormed|sente|bronsept|megafiz|ankamarin|besnim" },
             new[] { "d[ıi]j[ıi]tsu|onvo|axen", @"(ov(32150|42250|43250|50350|65500|75F500)|ax(32DAB04|32DAB13|50f[ıi]l242|43d[ıi]L13)|32DS8500|32DS9800|43DS9800|50DS8800|50DS9800|55DS8500|65DS8500|65DS8800)\w*" },
             new[] { "rüzgar", "ocak", "([234]|(iki|üç|dört)) gözlü|set üstü( lpg)?|[234]'l[iü]|set ütü doğalgaz" },
             new[] { @"lescon\w*", "[ck]ampus" },
@@ -183,7 +183,7 @@ namespace LuceneDemo
                     //File.WriteAllLines(path: outputFilePath, contents: matchedProducts);
                 }
 
-                foreach (var product in unMatchedProducts)
+                foreach (var product in matchedProducts)
                     Console.WriteLine(value: product);
 
                 Console.WriteLine();
