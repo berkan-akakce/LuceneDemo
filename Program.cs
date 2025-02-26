@@ -13,7 +13,7 @@ namespace LuceneDemo
         private static readonly string Refurbished = "yen[ıi]lenm[ıi][sş]";
 
         private static readonly Regex NonNewRegex = new Regex(
-            pattern: @"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|ürünü|yen[ıi]lenmi[sş]|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:teshir.*ürünü|[ıi]k[ıi]nc[ıi].*el)|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
+            pattern: $@"kutusuz|outlet|revizyonlu|te[sş]h?[ıi]r\b|{Refurbished}|[oö]l[uü] ?p[ıi](?:ks|x)el|refurb[ıi]sh\w*|(?:nakliye|ambalaj|paket|kutu)\w* hasarl[ıi]|hasarl[ıi] (?:nakliye|ambalaj|paket|kutu)\w*|kutu\w* deforme|deforme kutu\w*",
             options: RegexOptions.IgnoreCase | RegexOptions.Compiled
         );
 
@@ -21,7 +21,7 @@ namespace LuceneDemo
         {
             new[] { Refurbished, "perwoll" },
             new[] { "teşh?[ıi]r", @"\b(?:set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu)\b" },
-            new[] { "air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna" },
+            new[] { "\b(?:air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(?:açık)?büfe|ayna)\b" },
             new[] { $"{Refurbished} {Edition}" },
             new[] { $"{Edition} {Refurbished}" },
         };
@@ -159,9 +159,9 @@ namespace LuceneDemo
                     var product = serializer.Deserialize<Product>(reader);
 
                     if (NonNewRegexIsMatch(input: product.Name))
-                        matchedProducts.Add(product.Name);
+                        matchedProducts.Add(item: product.Name);
                     else
-                        unMatchedProducts.Add(product.Name);
+                        unMatchedProducts.Add(item: product.Name);
                 }
 
                 if (matchedProducts.Count != 0)
@@ -185,7 +185,17 @@ namespace LuceneDemo
         private static bool NonNewRegexIsMatch(string input)
         {
             return
-                NonNewRegex.IsMatch(input) &&
+                (
+                    NonNewRegex.IsMatch(input) ||
+                    (
+                        Regex.IsMatch(input, pattern: "[ıi]k[ıi]nc[ıi]", options: RegexOptions.IgnoreCase) &&
+                        Regex.IsMatch(input, pattern: "el", options: RegexOptions.IgnoreCase)
+                    ) ||
+                    (
+                        Regex.IsMatch(input, pattern: "te[sş]hir", options: RegexOptions.IgnoreCase) &&
+                        Regex.IsMatch(input, pattern: "[uü]r[uü]n[uü]", options: RegexOptions.IgnoreCase)
+                    )
+                ) &&
                 !DoesMatchPatternGroup(input, patterns: NonNewExcludedPatterns);
         }
 
