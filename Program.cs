@@ -28,7 +28,7 @@ namespace LuceneDemo
 
         private static readonly string[][] BannedProductPatterns =
         {
-            new[] { @"m[ıi]nox[ıi]l\w*|minoxidil\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|delay 48000\w*|xdelay 48000\w*|maflor*|sonda\w*.*idrar|idrar.*sonda\w*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(?:li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (?:ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (?:maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
+            new[] { @"m[ıi]nox[ıi](?:d[ıi])?l\w*|bioxinin\w*|prom[ıi]nox[ıi]l|testogel|x?delay 48000\w*|maflor*|sonda\w*.*idrar|idrar.*sonda\w*|opti-?free|klitoral|d[ıi]ldo|mast[uü]rbat[oö]r|\ban[uü]s|azd[ıi]r[ıi][cç][ıi]|pen[ıi]s(?:li)?|lovetoy|pretty ?love|endotrakeal|tenek[uü]l[uü]m|reflor|Gaspass\w*|alopexy\w*|stag 9000|tracoe|spirometre|riester|contractubex|jockstrap|umca|strath|proxar|legalon|mt cosmet[ıi]cs|makeuptime|convatec|umkaled|polybactum\w*|elfbar|perwill|vozol|globbie\w*|joypara|paysafe|\berox|acornbella|cialis\w*|cs13-85|nicorette\w*|özel bölgesi aç[ıi]k|propanthol|noskar|biohira|zinco[- ]c|eoprotin|loprox|pregomin|sadece (?:ankara|[ıi]stanbul)|[ıi]stanbula özel|remifemin|arkopharma harpadol|zade vital corvital|strath cold öksürük|su (?:maymunu|boncuğu|jeli)|büyüyen su topları|[ıi]nsektisit|akarisit|herbisit|bakırsülfat|g[oö]zta[sş][ıi]|nematisit|fungusit|antiparazit|fumigant|allicin|varroa" },
             new[] { "uraw", "mavi|blue" },
             new[] { @"avene\w*", @"tr[ıi]acneal\w*" },
             new[] { "opti", "free" },
@@ -137,21 +137,10 @@ namespace LuceneDemo
 
         private static void Main()
         {
-            //const string inputFilePath = "Start213.json";
             const string inputFilePath = "Start216.json";
             const string outputFilePath = "matchedProducts.txt";
             var matchedProducts = new List<string>();
             var unMatchedProducts = new List<string>();
-
-            //var json = File.ReadAllText(inputFilePath);
-            //var products = JsonConvert.DeserializeObject<List<Product>>(json);
-            //var matchedProducts =
-            //    products
-            //        .Where(product => NonNewRegex.IsMatch(product.Name))
-            //        .Select(product => product.Name)
-            //        .ToList();
-
-            //File.WriteAllLines(outputFilePath, matchedProducts);
 
             using (StreamReader file = File.OpenText(inputFilePath))
             using (var reader = new JsonTextReader(file))
@@ -184,7 +173,7 @@ namespace LuceneDemo
 
         private static bool ShouldBan(string input)
         {
-            return BannedProductPatterns.Any(array => array.All(pattern => Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase)));
+            return BannedProductPatterns.Any(array => array.All(pattern => Regex.IsMatch(input, pattern, options: RegexOptions.IgnoreCase)));
         }
 
         private static bool BannedRegexIsMatch(string input)
@@ -196,7 +185,7 @@ namespace LuceneDemo
                     !Regex.IsMatch(input, pattern: "jel|solüsyon", options: RegexOptions.IgnoreCase)
                 ) ||
                 (
-                    Regex.IsMatch(input, pattern: "silver shell", RegexOptions.IgnoreCase) &&
+                    Regex.IsMatch(input, pattern: "silver shell", options: RegexOptions.IgnoreCase) &&
                     Regex.IsMatch(input, pattern: "ahcc", options: RegexOptions.IgnoreCase) &&
                     !Regex.IsMatch(input, pattern: "shiitake", options: RegexOptions.IgnoreCase) &&
                     !Regex.IsMatch(input, pattern: "hexose", options: RegexOptions.IgnoreCase)
