@@ -28,7 +28,7 @@ namespace LuceneDemo
         private static readonly string[][] NonNewExcludedPatterns =
         {
             new[] { Refurbished, "perwoll" },
-            new[] { "teşh?[ıi]r", @"\b((aya[gğ]|dolab|[km]asas|[uü]n[ıi]tes)[ıi]|k(ase|ol[ıi]s[ıi]|utusu)|(panos|reyon)u|s(et|tand)[ıi]|t(aba[gğ]ı|eps[ıi]\w*))\b" },
+            new[] { "teşh?[ıi]r", @"\b((aya[gğ]|dolab|[km]asas|[uü]n[ıi]tes)[ıi]|k(ase|ol[ıi]s[ıi]|utusu)|(panos|reyon)u|s(et|tand)[ıi]|t(aba(k|[gğ]ı)|eps[ıi]\w*))\b" },
             new[] { @"\b(air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(açık)?büfe|ayna)\b" },
             new[] { $"{Refurbished} {Edition}" },
             new[] { $"{Edition} {Refurbished}" },
@@ -45,7 +45,7 @@ namespace LuceneDemo
         );
 
         private static readonly Regex FantasyRegex = new Regex(
-            pattern: @"bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|night)light",
+            pattern: @"bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|n[ıi]ght)l[ıi]ght",
             options: options | RegexOptions.Compiled
         );
 
