@@ -45,7 +45,7 @@ namespace LuceneDemo
         );
 
         private static readonly Regex FantasyRegex = new Regex(
-            pattern: @"d(er|uvakl)[ıi]|e(l[bd]i[sv]en?|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|n[ıi]ght)l[ıi]ght|bacio",
+            pattern: @"d(er|uvakl)[ıi]|e(l[bd]i[sv]en?|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|(moon|n[ıi]ght)l[ıi]ght|bacio|vixson",
             options: options | RegexOptions.Compiled
         );
 
@@ -169,9 +169,9 @@ namespace LuceneDemo
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            const string inputFilePath = "StartNoError.json";
+            const string inputFilePath = "216New.json";
             //const string outputFilePath = "matchedProducts.txt";
-            var matchedProducts = new List<string>();
+            //var matchedProducts = new List<string>();
             var unMatchedProducts = new List<string>();
 
             using (StreamReader file = File.OpenText(path: inputFilePath))
@@ -190,18 +190,21 @@ namespace LuceneDemo
                     var product = serializer.Deserialize<Product>(reader);
                     string input = product.Name;
 
-                    if (BannedRegexIsMatch(input) || NonNewRegexIsMatch(input))
-                        matchedProducts.Add(item: input);
+                    if (BannedRegexIsMatch(input) /*|| NonNewRegexIsMatch(input)*/)
+                    {
+                        //matchedProducts.Add(item: input);
+                    }
+
                     else
                         unMatchedProducts.Add(item: input);
                 }
 
-                if (matchedProducts.Count != 0)
-                {
-                    //File.WriteAllLines(path: outputFilePath, contents: matchedProducts);
-                }
+                //if (matchedProducts.Count != 0)
+                //{
+                //File.WriteAllLines(path: outputFilePath, contents: matchedProducts);
+                //}
 
-                foreach (var product in matchedProducts)
+                foreach (var product in unMatchedProducts)
                     Console.WriteLine(value: product);
 
                 Console.WriteLine();
