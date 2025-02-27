@@ -28,29 +28,29 @@ namespace LuceneDemo
         private static readonly string[][] NonNewExcludedPatterns =
         {
             new[] { Refurbished, "perwoll" },
-            new[] { "teşh?[ıi]r", @"\b(set[ıi]|kase|[km]asas[ıi]|teps[ıi]\w*|dolab[ıi]|panosu|taba[gğ]ı|reyonu|stand[ıi]|[uü]n[ıi]tesi|aya[gğ][ıi]|kol[ıi]s[ıi]|kutusu)\b" },
-            new[] { "\b(air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(açık)?büfe|ayna)\b" },
+            new[] { "teşh?[ıi]r", @"\b((aya[gğ]|dolab|[km]asas|[uü]n[ıi]tes)[ıi]|k(ase|ol[ıi]s[ıi]|utusu)|(panos|reyon)u|s(et|tand)[ıi]|t(aba[gğ]ı|eps[ıi]\w*))\b" },
+            new[] { @"\b(air outlet version|m[ıi]n[ıi]mal|melam[ıi]n|plast[ıi]k|akr[ıi]l[ıi]k|pol[ıi]karbon|(açık)?büfe|ayna)\b" },
             new[] { $"{Refurbished} {Edition}" },
             new[] { $"{Edition} {Refurbished}" },
         };
 
         private static readonly Regex BannedProductRegex = new Regex(
-            pattern: @"([ıi]nsekti|akari|herbi|nemati|fungu|antipara)[sz]it|\b(an[uü]s|erox)|a(cornbella|llicin|lopexy\w*|rkopharma harpadol|zd[ıi]r[ıi][cç][ıi])|b(akırsülfat|iohira|ioxinin\w*|üyüyen su topları)|c(ialis\w*|ontractubex|onvatec|s13-85)|d[ıi]ldo|e(lfbar|ndotrakeal|oprotin)|fumigant|g([oö]zta[sş][ıi]|aspass\w*|lobbie\w*)|j(ockstrap|oypara)|klitoral|l(egalon|oprox|ovetoy)|m([ıi]nox[ıi](d[ıi])?l\w*|aflor\w*|akeuptime|ast[uü]rbat[oö]r|t cosmet[ıi]cs)|n(icorette\w*|oskar)|opti-?free|p(aysafe|en[ıi]s(li)?|erwill|olybactum\w*|regomin|retty ?love|rom[ıi]nox[ıi]l|ropanthol|roxar)|r(eflor|emifemin|iester)|s(adece (ankara|[ıi]stanbul)|pirometre|tag 9000|trath( cold öksürük)?|u (maymunu|boncuğu|jeli))|t(enek[uü]l[uü]m|estogel|racoe)|um(ca|kaled)|v(arroa|ozol)|x?delay 48000\w*|z(ade vital corvital|inco[- ]c)|özel bölgesi aç[ıi]k|[ıi]stanbula özel",
+            pattern: @"([ıi]nsekti|akari|herbi|nemati|fungu|antipara)[sz]it|\b(an[uü]s|erox)|a(cornbella|l(licin|opexy)|rkopharma harpadol|zd[ıi]r[ıi][cç][ıi])|b(akırsülfat|io(hira|xinin)|üyüyen su topları)|c(ialis|on(tractubex|vatec)|s13-85)|d[ıi]ldo|e(lfbar|ndotrakeal|oprotin)|fumigant|g([oö]zta[sş][ıi]|aspass|lobbie)|jo(ckstrap|ypara)|klitoral|l(egal|o(pr|vet))o[nxy]|m([ıi]nox[ıi](d[ıi])?l|aflor|akeuptime|ast[uü]rbat[oö]r|t cosmet[ıi]cs)|n(icorette|oskar)|opti-?free|p(aysafe|en[ıi]s(li)?|erwill|olybactum|regomin|retty ?love|rom[ıi]nox[ıi]l|ropanthol|roxar)|r(eflor|emifemin|iester)|s(adece (ankara|[ıi]stanbul)|pirometre|tag 9000|trath( cold öksürük)?|u (maymunu|boncuğu|jeli))|t(enek[uü]l[uü]m|estogel|racoe)|um(ca|kaled)|v(arroa|ozol)|x?delay 48000|z(ade vital corvital|inco[- ]c)|özel bölgesi aç[ıi]k|[ıi]stanbula özel",
             options: options | RegexOptions.Compiled
         );
 
         private static readonly Regex VibratorRegex = new Regex(
-            pattern: @"anal|b(elden|üyük)|cm|dokulu|gerçekçi|külot|mini|prostat|seks|t(eknolojik|estis\w*|ıkaç)|uyarıcı|(kıvrım|duyar)lı",
+            pattern: @"anal|b(elden|üyük)|cm|dokulu|gerçekçi|külot|mini|prostat|seks|t(e(knolojik|stis)|ıkaç)|(uyarıc|(kıvrım|duyar)l)ı",
             options: options | RegexOptions.Compiled
         );
 
         private static readonly Regex FantasyRegex = new Regex(
-            pattern: @"bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(:?si)?|ostüm)|l(ablinque|iona)|m(ayokini|el bee|ite love)|seksi|vixson|(moon|night)light",
+            pattern: @"bacio|d(eri|uvaklı)|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|night)light",
             options: options | RegexOptions.Compiled
         );
 
         private static readonly Regex MerrySeeRegex = new Regex(
-            pattern: @"a(lttan açık|rkası açık)|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö(z alıcı|ğüs ucu))|jartiyerli deri|k(ostümü|ışkırtıcı)|nefes kesen|seksi",
+            pattern: @"a(lttan|rkası) açık|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö(z alıcı|ğüs ucu))|jartiyerli deri|k(ostümü|ışkırtıcı)|nefes kesen|seksi",
             options: options | RegexOptions.Compiled
         );
 
@@ -60,7 +60,7 @@ namespace LuceneDemo
         );
 
         private static readonly Regex SerumRegex = new Regex(
-            pattern: "a(nkamarin|qua(nose|ser))|b([ıi]of[ıi]z|aby(right|soin)|e(bsi|snim)|ronsept)|ccmed|doctormed|fizyo(es|ser|naz|sol)?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|almer|omer)|opti|rinomer|se(nte|ptomer)|thomson|wee(baby)?",
+            pattern: "a(nkamarin|qua(nose|ser))|b([ıi]of[ıi]z|aby(right|soin)|e(bs|sn)im?|ronsept)|ccmed|doctormed|fizyo(es|naz|s(er|ol))?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|almer|omer)|opti|rinomer|se(nte|ptomer)|thomson|wee(baby)?",
             options: options | RegexOptions.Compiled
         );
 
@@ -226,7 +226,7 @@ namespace LuceneDemo
                     NonNewRegex.IsMatch(input) ||
                     (
                         Regex.IsMatch(input, pattern: "[ıi]k[ıi]nc[ıi]", options) &&
-                        Regex.IsMatch(input, pattern: "el", options)
+                        Regex.IsMatch(input, pattern: @"\bel\b", options)
                     ) ||
                     (
                         Regex.IsMatch(input, pattern: "te[sş]hir", options) &&
