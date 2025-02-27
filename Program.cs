@@ -60,7 +60,7 @@ namespace LuceneDemo
         );
 
         private static readonly Regex SerumRegex = new Regex(
-            pattern: "a(nkamarin|qua(no)?ser?)|b([ıi]of[ıi]z|aby(right|soin)|e(bs|sn)im?|ronsept)|ccmed|doctormed|fizyo(es|naz|s(er|ol))?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|(al|o)mer)|opti|(rin|sept)omer|sente|thomson|wee(baby)?",
+            pattern: "a(nkamarin|qua(no)?ser?)|b([ıi]of[ıi]z|aby(right|soin)|e(bs|sn)im?|ronsept)|(cc|doctor)med|fizyo(es|naz|s(er|ol))?|gogove|[ıi]me (dc)?|iyon|m(egafiz|(i(nich|raderm)))|nas(obaby|(al|o)mer)|opti|(rin|sept)omer|sente|thomson|wee(baby)?",
             options: options | RegexOptions.Compiled
         );
 
@@ -140,28 +140,7 @@ namespace LuceneDemo
             new[] { "hasta", "muayene", "masası"},
             new[] { "hayvan", "sa[gğ]l[ıi][gğ][ıi]", "[uü]r[uü]n[uü]" },
             new[] { "kamagra", "jel" },
-            new[] { "nikotin", "(sakız|band)[ıi]" },
-            new[] { "hemen", "üyelik" },
-            new[] { "henkel", "maske" },
-            new[] { "hn 25", "anti-ishal" },
-            new[] { "m[uü]d[ae]hale", "sedye"},
-            new[] { "medikal", "sarf" },
-            new[] { "mite Love", "deri|jartiyer|seksi" },
-            new[] { "mueller", "diz"},
-            new[] { "netflix", "gift" },
-            new[] { "netflix", "hediye", "kartı" },
-            new[] { "opti", "free" },
-            new[] { "patates", "böceği", "ilac[ıi]" },
-            new[] { "proles", "yangın", "köpük" },
-            new[] { "razer", "gold", @"\btr\b" },
-            new[] { "rosenna", "gül suyu" },
-            new[] { "salyongoz", "yem[ıi]" },
-            new[] { "sümüklü", "böcek", "yem[ıi]" },
-            new[] { "varino", "varis" },
-            new[] { "vernel", "oda", "koku" },
-            new[] { "xbox", "ay", "3" },
-            new[] { "ön", "ödemeli", "kart" },
-            new[] { @"\bera\b", "aroma" }
+            new[] { "nikotin", "(sakız|band)[ıi]" }
         };
 
         private static void Main()
