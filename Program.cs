@@ -40,17 +40,17 @@ namespace LuceneDemo
         );
 
         private static readonly Regex VibratorRegex = new Regex(
-            pattern: @"anal|b(elden|üyük)|cm|dokulu|gerçekçi|külot|mini|prostat|seks|t(e(knolojik|stis)|ıkaç)|(uyarıc|(kıvrım|duyar)l)ı",
+            pattern: @"anal|b(elden|üyük)|cm|dokulu|(gerçekç|min)i|külot|prostat|seks|t(e(knolojik|stis)|ıkaç)|(uyarıc|(kıvrım|duyar)l)ı",
             options: options | RegexOptions.Compiled
         );
 
         private static readonly Regex FantasyRegex = new Regex(
-            pattern: @"d(er|uvakl)[ıi]|e(l[bd]i[sv]en?|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|(moon|n[ıi]ght)l[ıi]ght|bacio|vixson",
+            pattern: @"d(er|uvakl)[ıi]|e(l[bd]i[sv]en?|may|rkek)|(gece|jartiyer)l[ıi]k?|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayo|(el be|ite lov)e)|seksi|(moon|n[ıi]ght)l[ıi]ght|(baci|vixs)on?",
             options: options | RegexOptions.Compiled
         );
 
         private static readonly Regex MerrySeeRegex = new Regex(
-            pattern: @"a(lttan|rkası) açık|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö(z alıcı|ğüs ucu))|jartiyerli deri|k(ostümü|ışkırtıcı)|nefes kesen|seksi",
+            pattern: @"a(lttan|rkası) açık|deri (boxer|takım)|fant[ae]z[ıi]( slip)?|g(elin kız|ö((z al|ğüs )[ıiuü]c[ıiuü]))|jartiyerli|k(ostümü|ışkırtıcı)|nefes kesen|seksi",
             options: options | RegexOptions.Compiled
         );
 
