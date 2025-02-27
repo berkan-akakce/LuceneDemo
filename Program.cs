@@ -35,7 +35,7 @@ namespace LuceneDemo
         };
 
         private static readonly Regex BannedProductRegex = new Regex(
-            pattern: @"(([ıi]nsekt|akar|herb|nemat)i|fungu|antipara)[sz]it|\b(an[uü]s|erox)|a(cornbella|l(licin|opexy)|rkopharma harpadol|zd[ıi]r[ıi][cç][ıi])|b(akırsülfat|io(hira|xinin)|üyüyen su topları)|c(ialis|on(tractubex|vatec)|s13-85)|d[ıi]ldo|e(lfbar|ndotrakeal|oprotin)|fumigant|g([oö]zta[sş][ıi]|aspass|lobbie)|jo(ckst|ypa)rap?|klitoral|l(egal|o(pr|vet))o[nxy]|m([ıi]nox[ıi](d[ıi])?l|aflor|akeuptime|ast[uü]rbat[oö]r|t cosmet[ıi]cs)|n(icorette|oskar)|opti-?free|p(aysafe|en[ıi]s(li)?|erwill|olybactum|r(e(gomin|tty ?love)|o(m[ıi]nox[ıi]l|panthol|xar)))|r(e(flor|mifemin)|iester)|s(adece (ankara|[ıi]stanbul)|pirometre|tag 9000|trath( cold öksürük)?|u (maymunu|boncuğu|jeli))|t(e(nek[uü]l[uü]m|stogel)|racoe)|um[ck]a(led)?|v(arroa|ozol)|x?delay 48000|z(ade vital corvital|inco[- ]c)|özel bölgesi aç[ıi]k|[ıi]stanbula özel",
+            pattern: @"\b(an[uü]s|erox)|a(cornbella|l(licin|opexy)|rkopharma harpadol|zd[ıi]r[ıi][cç][ıi])|b(akırsülfat|io(hira|xinin)|üyüyen su topları)|c(ialis|on(tractubex|vatec)|s13-85)|d[ıi]ldo|e(lfbar|ndotrakeal|oprotin)|fumigant|g([oö]zta[sş][ıi]|aspass|lobbie)|jo(ckst|ypa)rap?|klitoral|l(egal|o(pr|vet))o[nxy]|m([ıi]nox[ıi](d[ıi])?l|aflor|akeuptime|ast[uü]rbat[oö]r|t cosmet[ıi]cs)|n(icorette|oskar)|opti-?free|p(aysafe|en[ıi]s(li)?|erwill|olybactum|r(e(gomin|tty ?love)|o(m[ıi]nox[ıi]l|panthol|xar)))|r(e(flor|mifemin)|iester)|s(adece (ankara|[ıi]stanbul)|pirometre|tag 9000|trath( cold öksürük)?|u (maymunu|boncuğu|jeli))|t(e(nek[uü]l[uü]m|stogel)|racoe)|um[ck]a(led)?|v(arroa|ozol)|x?delay 48000|z(ade vital corvital|inco[- ]c)|özel bölgesi aç[ıi]k|[ıi]stanbula özel|(([ıi]nsekt|akar|herb|nemat)i|fungu|antipara)[sz]it",
             options: options | RegexOptions.Compiled
         );
 
@@ -45,7 +45,7 @@ namespace LuceneDemo
         );
 
         private static readonly Regex FantasyRegex = new Regex(
-            pattern: @"bacio|d(er|uvakl)[ıi]|e(lbise|ldiven|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|n[ıi]ght)l[ıi]ght",
+            pattern: @"d(er|uvakl)[ıi]|e(l[bd]i[sv]en?|may|rkek)|gecel[ıi]k|jartiyerli|k([ıi]rba[cç]|elepçe(si)?|ostüm)|l(ablinque|iona)|m(ayokini|(el be|ite lov)e)|seksi|vixson|(moon|n[ıi]ght)l[ıi]ght|bacio",
             options: options | RegexOptions.Compiled
         );
 
@@ -139,17 +139,17 @@ namespace LuceneDemo
             new[] { "game", "pass", @"\bay\b" },
             new[] { "hasta", "muayene", "masası"},
             new[] { "hayvan", "sa[gğ]l[ıi][gğ][ıi]", "[uü]r[uü]n[uü]" },
+            new[] { "kamagra", "jel" },
+            new[] { "nikotin", "(sakız|band)[ıi]" },
             new[] { "hemen", "üyelik" },
             new[] { "henkel", "maske" },
             new[] { "hn 25", "anti-ishal" },
-            new[] { "kamagra", "jel" },
             new[] { "m[uü]d[ae]hale", "sedye"},
             new[] { "medikal", "sarf" },
             new[] { "mite Love", "deri|jartiyer|seksi" },
             new[] { "mueller", "diz"},
             new[] { "netflix", "gift" },
             new[] { "netflix", "hediye", "kartı" },
-            new[] { "nikotin", "(sakız|band)[ıi]" },
             new[] { "opti", "free" },
             new[] { "patates", "böceği", "ilac[ıi]" },
             new[] { "proles", "yangın", "köpük" },
